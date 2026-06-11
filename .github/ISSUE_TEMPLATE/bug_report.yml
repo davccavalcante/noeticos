@@ -1,0 +1,123 @@
+name: "Bug report"
+description: "Report a defect in @takk/noeticos."
+title: "[bug] <one-line summary>"
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. Please fill every section honestly - the maintainer reads every issue personally and complete context speeds up triage.
+
+        **Security vulnerabilities are NOT bugs filed here.** Email <davcavalcante@proton.me> with prefix `[SECURITY]`.
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: "Affected surface"
+      description: "Which part of the package does the bug occur in?"
+      options:
+        - "core (createNoeticOS / recommend / report / profiles / decisions)"
+        - "otel (@takk/noeticos/otel)"
+        - "vercel (@takk/noeticos/vercel)"
+        - "integrations (@takk/noeticos/integrations)"
+        - "web (@takk/noeticos/web)"
+        - "edge (@takk/noeticos/edge)"
+        - "cli (noeticos simulate / inspect / serve)"
+        - "state backends (memoryState / fileState / snapshots)"
+        - "statistics (promotion / rollback / reward / bandits)"
+        - "types / .d.ts"
+        - "docs / README / SPEC"
+        - "CI / workflows"
+        - "not sure"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: "Package version"
+      description: "Output of `npm ls @takk/noeticos`, or the git SHA if testing local source."
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: "Reproduction steps"
+      description: "Minimal, deterministic steps. Include the engine options (objective, seed, canaryShare, constraints) and code snippets. Seeded reproductions are gold: the engine is deterministic per seed."
+      placeholder: |
+        1. `pnpm add @takk/noeticos`
+        2. Code snippet:
+           ```ts
+           import { createNoeticOS } from '@takk/noeticos';
+           const runtime = createNoeticOS({ seed: 7 });
+           // ...
+           ```
+        3. Observe...
+      render: bash
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected behavior"
+      description: "What did you expect to happen? Cite SPEC.md or README if relevant."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Actual behavior"
+      description: "What happened instead? Paste full stack traces, error messages, the relevant DecisionEntry records, or the runtime.inspect() snapshot if relevant."
+    validations:
+      required: true
+
+  - type: textarea
+    id: console
+    attributes:
+      label: "Terminal output"
+      description: "Paste relevant stderr/stdout here (it will be rendered as a code block). A `noeticos simulate` transcript is welcome when the report concerns tuning behavior."
+      render: console
+    validations:
+      required: false
+
+  - type: input
+    id: node
+    attributes:
+      label: "Node version (or runtime)"
+      description: "Output of `node -v`. The package requires Node >= 20.0.0; CI runs 20, 22, and 24. For /web and /edge bugs, name the runtime (browser, Cloudflare Workers, Vercel Edge, Deno, Bun) and its version."
+      placeholder: "v22.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: "Operating system"
+      description: "e.g. macOS 26 (Apple Silicon), Ubuntu 24.04, Debian 12, Windows 11. Some bugs are platform-specific."
+      placeholder: "macOS 26 (Apple Silicon)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: "Additional context"
+      description: "Anything else the maintainer should know - related issues, conjectured root cause, links to upstream issues, etc."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Pre-submission checklist"
+      options:
+        - label: "I read [SPEC.md](https://github.com/davccavalcante/noeticos/blob/main/SPEC.md) and confirmed this is not documented behavior (e.g. futility rollbacks, ignored unknown executionIds, degraded mode beyond maxAgents)."
+          required: true
+        - label: "I searched existing issues and PRs for duplicates."
+          required: true
+        - label: "This is NOT a security vulnerability (those go to email per SECURITY.md)."
+          required: true

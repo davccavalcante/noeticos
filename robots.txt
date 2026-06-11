@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://noeticos.takk.ag/sitemap.xml

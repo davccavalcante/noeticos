@@ -1,0 +1,2370 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+
+  <title>NoeticOS: adaptive runtime intelligence for agents</title>
+  <meta name="description"
+    content="NoeticOS is the JIT compiler for agents: zero-dependency adaptive runtime intelligence. Per-task-class tuning, canary rollouts, automatic rollback.">
+  <meta name="keywords"
+    content="adaptive runtime, parameter tuning, multi-armed bandit, ucb1, canary rollout, automatic rollback, decision audit, task classification, agent optimization, online learning, opentelemetry genai, vercel ai sdk, edge runtime, typescript, takk, noeticos">
+  <meta name="author" content="David C Cavalcante">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+
+  <link rel="canonical" href="https://noeticos.takk.ag/">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="alternate icon" type="image/png" href="assets/apple-touch-icon.png">
+  <link rel="sitemap" type="application/xml" href="sitemap.xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/phosphor-icons@1.4.2/src/css/icons.min.css">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://noeticos.takk.ag/">
+  <meta property="og:title" content="NoeticOS: adaptive runtime intelligence for agents">
+  <meta property="og:description"
+    content="The JIT compiler for agents: per-task-class parameter tuning with confidence-bound bandits, deterministic canary rollouts with automatic rollback, and an append-only decision audit log. Zero runtime dependencies.">
+  <meta property="og:image" content="https://noeticos.takk.ag/assets/og-image.png">
+  <meta property="og:image:secure_url" content="https://noeticos.takk.ag/assets/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="NoeticOS - adaptive runtime intelligence for IM agents">
+  <meta property="og:site_name" content="NoeticOS">
+  <meta property="og:locale" content="en_US">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@davccavalcante">
+  <meta name="twitter:creator" content="@davccavalcante">
+  <meta name="twitter:title" content="NoeticOS: adaptive runtime intelligence for agents">
+  <meta name="twitter:description"
+    content="The JIT compiler for agents: per-task-class parameter tuning, deterministic canary rollouts, automatic rollback, decision audit. Zero runtime dependencies.">
+  <meta name="twitter:image" content="https://noeticos.takk.ag/assets/og-image.png">
+  <meta name="twitter:image:alt" content="NoeticOS - adaptive runtime intelligence for IM agents">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "NoeticOS",
+    "alternateName": "@takk/noeticos",
+    "headline": "Adaptive runtime intelligence for agents",
+    "description": "Zero-runtime-dependency library and CLI that classifies every agent task, learns the optimal model, temperature, topP, maxTurns, retryBudget, and contextShare per task class with discounted confidence-bound bandits, applies changes through deterministic canary rollouts with statistically gated promotion and automatic rollback, and records every decision in an append-only audit log with numeric evidence. Works in Node, browsers, and edge runtimes.",
+    "url": "https://noeticos.takk.ag/",
+    "downloadUrl": "https://www.npmjs.com/package/@takk/noeticos",
+    "installUrl": "https://www.npmjs.com/package/@takk/noeticos",
+    "image": "https://noeticos.takk.ag/assets/noeticos.png",
+    "softwareVersion": "1.0.0",
+    "applicationCategory": "DeveloperApplication",
+    "applicationSubCategory": "Adaptive agent runtime",
+    "operatingSystem": "Node.js >= 20, browsers, edge runtimes",
+    "programmingLanguage": ["TypeScript", "JavaScript"],
+    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+    "keywords": "adaptive runtime, parameter tuning, multi-armed bandit, canary rollout, automatic rollback, decision audit",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock"},
+    "sameAs": ["https://github.com/davccavalcante/noeticos", "https://www.npmjs.com/package/@takk/noeticos"],
+    "author": {
+      "@type": "Person",
+      "name": "David C Cavalcante",
+      "email": "davcavalcante@proton.me",
+      "url": "https://github.com/davccavalcante",
+      "sameAs": ["https://linkedin.com/in/hellodav", "https://x.com/davccavalcante", "https://takk.ag"]
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Takk Innovate Studio",
+      "url": "https://takk.ag",
+      "logo": "https://noeticos.takk.ag/assets/takk.png"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Takk Innovate Studio",
+    "url": "https://takk.ag",
+    "logo": "https://noeticos.takk.ag/assets/takk.png",
+    "founder": {
+      "@type": "Person",
+      "name": "David C Cavalcante",
+      "url": "https://github.com/davccavalcante"
+    },
+    "sameAs": ["https://github.com/davccavalcante", "https://linkedin.com/in/hellodav", "https://x.com/davccavalcante"]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "NoeticOS",
+    "alternateName": "@takk/noeticos",
+    "url": "https://noeticos.takk.ag/",
+    "publisher": {"@type": "Organization", "name": "Takk Innovate Studio", "url": "https://takk.ag"}
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "What does NoeticOS actually do?", "acceptedAnswer": {"@type": "Answer", "text": "It tunes the runtime parameters of your agents while they run. Before each task, recommend() returns the full parameter set (model, temperature, topP, maxTurns, retryBudget, contextShare) learned for that agent and task class. After the task, report() feeds back what happened. The engine scores each outcome into a reward, updates per-class bandits, and converges on the values that maximize your objective."}},
+      {"@type": "Question", "name": "Why call it the JIT compiler for agents?", "acceptedAnswer": {"@type": "Answer", "text": "A JIT compiler observes a running program and recompiles its hot paths with better optimizations, without stopping it. NoeticOS does the same for agent runtime parameters: it observes executions, identifies the hot task classes, and recompiles their parameter sets through canary experiments, while production traffic keeps flowing."}},
+      {"@type": "Question", "name": "Is it safe to let a library tune production parameters?", "acceptedAnswer": {"@type": "Answer", "text": "That constraint shaped the whole design. NoeticOS never explores on baseline traffic: exploration is confined to a deterministic canary cohort, 10% of executions by default, and a canary differs from the baseline in exactly one parameter at a time. Promotion requires statistical confidence, rollback fires on much weaker evidence by design, and a hard quality floor rolls back any violating canary regardless of reward. Every change lands in an append-only audit log with the numbers that justified it."}},
+      {"@type": "Question", "name": "Which statistics gate promotion and rollback?", "acceptedAnswer": {"@type": "Answer", "text": "Promotion uses Welch's t test on mean reward, with the alpha spread across a Bonferroni look budget, plus confidence-bound separation: the candidate's lower bound must clear the baseline's upper bound. Rollback uses an exact binomial test on failure counts, a Wilson score upper bound checked against the quality floor, and a futility bound that abandons a canary after four times the minimum sample budget without a verdict."}},
+      {"@type": "Question", "name": "Does NoeticOS read or store my prompts?", "acceptedAnswer": {"@type": "Answer", "text": "No. The prompt is an optional classifier input and is never stored: snapshots, decisions, and telemetry carry aggregate statistics only. The OTel ingestion deliberately ignores span events, which can carry message bodies, and tool-call arguments enter only as caller-computed hashes."}},
+      {"@type": "Question", "name": "How many runtime dependencies does it add?", "acceptedAnswer": {"@type": "Answer", "text": "Zero. The core is 11.15 kB brotli and uses nothing beyond the JavaScript standard library; the statistics (Welch, Wilson, exact binomial, P2 quantile estimators) are implemented inside the package. The family bridges are structural, so even the optional peer packages are never imported by the engine itself."}},
+      {"@type": "Question", "name": "Does it run in browsers and edge runtimes?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The web and edge entry points (10.54 kB brotli each) expose the full engine minus the Node file backend, so bundles never reference node:fs. Cohort assignment uses a seeded deterministic PRNG, not platform randomness, so the same configuration behaves identically in Node, Cloudflare Workers, Vercel Edge, Deno, Bun, and the browser."}},
+      {"@type": "Question", "name": "How does it integrate with the Vercel AI SDK and OpenTelemetry?", "acceptedAnswer": {"@type": "Answer", "text": "@takk/noeticos/vercel ships a packaged middleware for wrapLanguageModel: it applies the recommended temperature and topP per call and reports token usage, latency, and finish reason automatically, for generateText and streamText alike. @takk/noeticos/otel converts OTel GenAI semantic-convention spans into task descriptors and outcomes structurally, without importing any OpenTelemetry package; ingestion is live by design, and replaying exported traces warms the cost and latency quantile bands rather than performing historical credit assignment."}},
+      {"@type": "Question", "name": "What evidence backs version 1.0.0?", "acceptedAnswer": {"@type": "Answer", "text": "159 tests across 12 files run on Node 22 and Node 24, with 92.15% line coverage. A 9-scenario tuning benchmark runs in CI, so a change that stops the engine from beating a static baseline fails the build. Bundle size budgets are enforced per entry point, and every release is published with SLSA provenance through GitHub Actions OIDC."}},
+      {"@type": "Question", "name": "What is the policy on breaking changes?", "acceptedAnswer": {"@type": "Answer", "text": "Strict SemVer 2.0.0 from 1.0.0. Everything exported from the six entry points is the public API, the state snapshot schema is versioned (version 1 across the 1.x line), and new task kinds may be added in minor releases, so exhaustive switches over TaskKind should keep a default branch. Breaking changes require a major bump and a deprecation cycle."}}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Takk Innovate Studio", "item": "https://takk.ag"},
+      {"@type": "ListItem", "position": 2, "name": "NoeticOS", "item": "https://noeticos.takk.ag/"}
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --font-family-primary: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      --font-family-display: "Newsreader", Georgia, "Times New Roman", serif;
+      --font-family-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --font-size-xs: 12px;
+      --font-size-sm: 14px;
+      --font-size-md: 16px;
+      --font-size-lg: 18px;
+      --font-size-xl: 20px;
+      --font-size-2xl: 36px;
+      --font-size-3xl: 48px;
+      --font-size-display: clamp(36px, 6vw, 64px);
+      --font-weight-base: 500;
+      --font-line-height-base: 1.5;
+      --color-text-primary: #1c1917;
+      --color-text-tertiary: #78716c;
+      --color-text-inverse: #fafaf9;
+      --color-surface-base: #000000;
+      --color-surface-muted: #f4f3f2;
+      --color-surface-strong: #1d1511;
+      --color-surface-page: #ffffff;
+      --color-surface-card: #fafaf9;
+      --color-text-secondary: #57534e;
+      --color-border: #e7e5e4;
+      --color-border-strong: #d6d3d1;
+      --color-strong-hover: #382a20;
+      --color-focus-ring: #1d1511;
+      --color-error: #b91c1c;
+      --color-error-surface: #fef2f2;
+      --color-success: #15803d;
+      --color-success-surface: #f0fdf4;
+      --color-code-bg: #1c1917;
+      --color-code-fg: #fafaf9;
+      --color-code-token-keyword: #f5a98a;
+      --color-code-token-string: #a3d9a5;
+      --color-code-token-comment: #a8a29e;
+      --color-code-token-func: #93c5fd;
+      --color-code-token-num: #fcd34d;
+      --space-1: 8px;
+      --space-2: 10px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 64px;
+      --space-7: 112px;
+      --space-8: 216px;
+      --radius-xs: 8px;
+      --radius-sm: 12px;
+      --radius-md: 16px;
+      --radius-lg: 20px;
+      --motion-instant: 200ms;
+      --motion-ease: cubic-bezier(0.2, 0, 0, 1);
+      --shadow-sm: 0 1px 2px rgba(28, 25, 23, 0.06);
+      --shadow-md: 0 6px 24px rgba(28, 25, 23, 0.08);
+      --shadow-lg: 0 18px 48px rgba(28, 25, 23, 0.12);
+    }
+
+    [data-theme="dark"] {
+      --color-surface-page: #000000;
+      --color-surface-card: #161412;
+      --color-surface-muted: #1c1917;
+      --color-text-primary: #fafaf9;
+      --color-text-secondary: #d6d3d1;
+      --color-text-tertiary: #a8a29e;
+      --color-text-inverse: #1c1917;
+      --color-border: #2a2724;
+      --color-border-strong: #3a3531;
+      --color-surface-strong: #e7dcc9;
+      --color-strong-hover: #d8c9b2;
+      --color-focus-ring: #d8c9b2;
+      --color-error: #f87171;
+      --color-error-surface: #2a1414;
+      --color-success: #4ade80;
+      --color-success-surface: #14241c;
+      --color-code-bg: #0a0908;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.7);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --color-surface-page: #000000;
+        --color-surface-card: #161412;
+        --color-surface-muted: #1c1917;
+        --color-text-primary: #fafaf9;
+        --color-text-secondary: #d6d3d1;
+        --color-text-tertiary: #a8a29e;
+        --color-text-inverse: #1c1917;
+        --color-border: #2a2724;
+        --color-border-strong: #3a3531;
+        --color-surface-strong: #e7dcc9;
+        --color-strong-hover: #d8c9b2;
+        --color-focus-ring: #d8c9b2;
+        --color-error: #f87171;
+        --color-error-surface: #2a1414;
+        --color-success: #4ade80;
+        --color-success-surface: #14241c;
+        --color-code-bg: #0a0908;
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+        --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.5);
+        --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-family-primary);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-base);
+      line-height: var(--font-line-height-base);
+      color: var(--color-text-primary);
+      background: var(--color-surface-page);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      transition: background var(--motion-instant) var(--motion-ease),
+        color var(--motion-instant) var(--motion-ease);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-focus-ring);
+      outline-offset: 2px;
+      border-radius: var(--radius-xs);
+    }
+
+    :focus:not(:focus-visible) {
+      outline: none;
+    }
+
+    a {
+      color: var(--color-text-primary);
+      text-decoration: none;
+      transition: color var(--motion-instant) var(--motion-ease);
+    }
+
+    a:hover {
+      color: var(--color-strong-hover);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    p {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-secondary);
+    }
+
+    p.lead {
+      font-size: var(--font-size-lg);
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+      max-width: 60ch;
+    }
+
+    ul,
+    ol {
+      padding-left: var(--space-4);
+      color: var(--color-text-secondary);
+      margin: 0 0 var(--space-3);
+    }
+
+    li {
+      margin-bottom: var(--space-1);
+    }
+
+    strong {
+      color: var(--color-text-primary);
+    }
+
+    .display,
+    h1,
+    h2 {
+      font-family: var(--font-family-display);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.08;
+      color: var(--color-text-primary);
+      margin: 0 0 var(--space-3);
+    }
+
+    h1 {
+      font-size: var(--font-size-display);
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+    }
+
+    h2 {
+      font-size: var(--font-size-2xl);
+    }
+
+    h3 {
+      font-family: var(--font-family-primary);
+      font-size: var(--font-size-md);
+      font-weight: 600;
+      color: var(--color-text-primary);
+      letter-spacing: -0.005em;
+      margin: 0 0 var(--space-2);
+    }
+
+    h4 {
+      font-family: var(--font-family-primary);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin: 0 0 var(--space-2);
+    }
+
+    .eyebrow {
+      font-family: var(--font-family-primary);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+      margin: 0 0 var(--space-3);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+
+    .eyebrow i {
+      color: var(--color-text-secondary);
+      font-size: 14px;
+    }
+
+    code {
+      font-family: var(--font-family-mono);
+      font-size: 0.88em;
+      background: var(--color-surface-muted);
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: var(--color-text-primary);
+      border: 1px solid var(--color-border);
+    }
+
+    pre {
+      font-family: var(--font-family-mono);
+      font-size: 13px;
+      line-height: 1.6;
+      background: var(--color-code-bg);
+      color: var(--color-code-fg);
+      padding: var(--space-4) var(--space-5);
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      margin: 0 0 var(--space-3);
+      position: relative;
+      border: 1px solid var(--color-border);
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+      border: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    pre .tk-keyword {
+      color: var(--color-code-token-keyword);
+    }
+
+    pre .tk-string {
+      color: var(--color-code-token-string);
+    }
+
+    pre .tk-comment {
+      color: var(--color-code-token-comment);
+      font-style: italic;
+    }
+
+    pre .tk-func {
+      color: var(--color-code-token-func);
+    }
+
+    pre .tk-num {
+      color: var(--color-code-token-num);
+    }
+
+    .skip-link {
+      position: absolute;
+      left: var(--space-4);
+      top: -64px;
+      background: var(--color-surface-strong);
+      color: var(--color-text-inverse);
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-xs);
+      z-index: 100;
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      transition: top var(--motion-instant) var(--motion-ease);
+    }
+
+    .skip-link:focus {
+      top: var(--space-4);
+      text-decoration: none;
+    }
+
+    /* ---------- Icon normalization ----------
+       Phosphor 1.4.2 uses font-icons via :before content, which inherit the
+       body line-height (1.5) and render off-center inside flex/grid hosts.
+       Forcing line-height:1 + inline-flex display gives every icon a square
+       intrinsic box that centers cleanly. The same applies to our custom
+       inline .x-icon SVG so the X mark sits on the same baseline grid as the
+       Phosphor glyphs.
+       text-decoration:none ensures icons inside <a> never inherit underline
+       from a hover state on the link. */
+    [class^="ph-"],
+    [class*=" ph-"],
+    .x-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      vertical-align: middle;
+      flex: 0 0 auto;
+      text-decoration: none;
+    }
+
+    a:hover [class^="ph-"],
+    a:hover [class*=" ph-"],
+    a:hover .x-icon {
+      text-decoration: none;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding-left: var(--space-5);
+      padding-right: var(--space-5);
+    }
+
+    .wrap--narrow {
+      max-width: 760px;
+    }
+
+    header.site {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: color-mix(in srgb, var(--color-surface-page) 86%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      height: 64px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-family-primary);
+      font-weight: 700;
+      font-size: var(--font-size-md);
+      color: var(--color-text-primary);
+      letter-spacing: -0.015em;
+    }
+
+    .brand:hover {
+      text-decoration: none;
+      color: var(--color-text-primary);
+    }
+
+    .brand .mark {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-xs);
+      background: var(--color-surface-strong);
+      color: var(--color-text-inverse);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-family-display);
+      font-size: var(--font-size-md);
+      line-height: 1;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      display: inline-block;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-xs);
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-sm);
+      transition: background var(--motion-instant) var(--motion-ease), color var(--motion-instant) var(--motion-ease);
+    }
+
+    .nav-links a:hover {
+      background: var(--color-surface-muted);
+      color: var(--color-text-primary);
+      text-decoration: none;
+    }
+
+    .nav-tail {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    @media (max-width: 860px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    .theme-toggle {
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--color-border-strong);
+      background: var(--color-surface-card);
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: background var(--motion-instant) var(--motion-ease), color var(--motion-instant) var(--motion-ease), border-color var(--motion-instant) var(--motion-ease);
+    }
+
+    .theme-toggle:hover {
+      background: var(--color-surface-muted);
+      color: var(--color-text-primary);
+    }
+
+    .theme-toggle i {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      display: none;
+    }
+
+    :root[data-theme="dark"] .theme-toggle .ph-sun {
+      display: inline-flex;
+    }
+
+    :root[data-theme="light"] .theme-toggle .ph-moon {
+      display: inline-flex;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .ph-sun {
+        display: inline-flex;
+      }
+
+      :root[data-theme="light"] .theme-toggle .ph-moon {
+        display: inline-flex;
+      }
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) .theme-toggle .ph-moon {
+        display: inline-flex;
+      }
+
+      :root[data-theme="dark"] .theme-toggle .ph-sun {
+        display: inline-flex;
+      }
+    }
+
+    .btn {
+      --btn-bg: var(--color-surface-strong);
+      --btn-fg: var(--color-text-inverse);
+      --btn-border: transparent;
+      font-family: var(--font-family-primary);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-1);
+      padding: var(--space-3) var(--space-4);
+      min-height: 44px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--btn-border);
+      background: var(--btn-bg);
+      color: var(--btn-fg);
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+      transition: background var(--motion-instant) var(--motion-ease), border-color var(--motion-instant) var(--motion-ease), transform var(--motion-instant) var(--motion-ease);
+    }
+
+    .btn:hover {
+      background: var(--color-strong-hover);
+      color: var(--btn-fg);
+      text-decoration: none;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn i {
+      font-size: 16px;
+    }
+
+    .btn--secondary {
+      --btn-bg: transparent;
+      --btn-fg: var(--color-text-primary);
+      --btn-border: var(--color-border-strong);
+    }
+
+    .btn--secondary:hover {
+      background: var(--color-surface-muted);
+      color: var(--color-text-primary);
+    }
+
+    .btn--ghost {
+      --btn-bg: transparent;
+      --btn-fg: var(--color-text-secondary);
+      --btn-border: transparent;
+    }
+
+    .btn--ghost:hover {
+      background: var(--color-surface-muted);
+      color: var(--color-text-primary);
+    }
+
+    .btn--sm {
+      min-height: 36px;
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--font-size-xs);
+    }
+
+    section {
+      padding-top: var(--space-7);
+      padding-bottom: var(--space-7);
+    }
+
+    section.alt {
+      background: var(--color-surface-muted);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .section-head {
+      max-width: 680px;
+      margin-bottom: var(--space-6);
+    }
+
+    .section-head h2 {
+      font-size: var(--font-size-2xl);
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-md);
+    }
+
+    .hero {
+      padding-top: var(--space-7);
+      padding-bottom: var(--space-6);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+      align-items: center;
+    }
+
+    @media (min-width: 880px) {
+      .hero-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: var(--space-5);
+      }
+    }
+
+    .hero h1 {
+      margin: var(--space-3) 0 var(--space-4);
+      max-width: 18ch;
+    }
+
+    .hero .lead {
+      max-width: 50ch;
+      font-size: var(--font-size-lg);
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-top: var(--space-5);
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+      margin-top: var(--space-6);
+      padding-top: var(--space-5);
+      border-top: 1px solid var(--color-border);
+    }
+
+    @media (min-width: 600px) {
+      .hero-meta {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .hero-meta .item .k {
+      font-family: var(--font-family-display);
+      font-size: var(--font-size-xl);
+      color: var(--color-text-primary);
+      letter-spacing: -0.01em;
+      display: block;
+    }
+
+    .hero-meta .item .v {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-tertiary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-top: 2px;
+      display: block;
+    }
+
+    .hero-art {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      max-width: 420px;
+      margin: 0 auto;
+      border-radius: var(--radius-md);
+      background: var(--color-surface-card);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      padding: var(--space-5);
+    }
+
+    .hero-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .rules {
+      display: grid;
+      gap: var(--space-4);
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 860px) {
+      .rules {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .rule {
+      border-radius: var(--radius-sm);
+      padding: var(--space-5);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-card);
+    }
+
+    .rule.do {
+      background: color-mix(in srgb, var(--color-success) 7%, var(--color-surface-card));
+      border-color: color-mix(in srgb, var(--color-success) 30%, var(--color-border));
+    }
+
+    .rule.dont {
+      background: color-mix(in srgb, var(--color-error) 6%, var(--color-surface-card));
+      border-color: color-mix(in srgb, var(--color-error) 28%, var(--color-border));
+    }
+
+    .rule .label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-3);
+    }
+
+    .rule.do .label {
+      color: var(--color-success);
+    }
+
+    .rule.dont .label {
+      color: var(--color-error);
+    }
+
+    .rule .label i {
+      font-size: 14px;
+    }
+
+    .rule h3 {
+      margin-bottom: var(--space-3);
+    }
+
+    .rule ol {
+      margin: 0;
+      padding-left: var(--space-4);
+      color: var(--color-text-secondary);
+    }
+
+    .rule li {
+      margin-bottom: var(--space-2);
+      line-height: 1.6;
+    }
+
+    .rule li strong {
+      display: inline-block;
+      color: var(--color-text-primary);
+      font-family: var(--font-family-mono);
+      font-size: 0.88em;
+      margin-right: 4px;
+    }
+
+    .grid {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .grid--2 {
+      grid-template-columns: 1fr;
+    }
+
+    .grid--3 {
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 700px) {
+      .grid--2 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .grid--3 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (min-width: 980px) {
+      .grid--3 {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+
+    .card {
+      background: var(--color-surface-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      transition: transform var(--motion-instant) var(--motion-ease), box-shadow var(--motion-instant) var(--motion-ease), border-color var(--motion-instant) var(--motion-ease);
+    }
+
+    .card:hover {
+      border-color: var(--color-border-strong);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card .icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-xs);
+      background: var(--color-surface-muted);
+      color: var(--color-surface-strong);
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--color-border);
+    }
+
+    .card .icon-wrap i {
+      font-size: 20px;
+    }
+
+    .card h3 {
+      margin: 0;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-sm);
+      line-height: 1.6;
+    }
+
+    .card .benefit {
+      margin-top: var(--space-2);
+      font-size: var(--font-size-xs);
+      color: var(--color-text-primary);
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-surface-muted);
+      border-left: 3px solid var(--color-success);
+      border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+      line-height: 1.55;
+    }
+
+    .card .benefit::before {
+      content: "Outcome";
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-success);
+      margin-bottom: 2px;
+    }
+
+    .tablist {
+      display: inline-flex;
+      flex-wrap: wrap;
+      background: var(--color-surface-card);
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-xs);
+      padding: 4px;
+      gap: 2px;
+      margin-bottom: var(--space-3);
+    }
+
+    .tab {
+      font-family: var(--font-family-mono);
+      font-size: var(--font-size-xs);
+      padding: var(--space-2) var(--space-3);
+      min-height: 32px;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--color-text-secondary);
+      border: 0;
+      cursor: pointer;
+      transition: background var(--motion-instant) var(--motion-ease), color var(--motion-instant) var(--motion-ease);
+    }
+
+    .tab:hover {
+      color: var(--color-text-primary);
+      background: var(--color-surface-muted);
+    }
+
+    .tab[aria-selected="true"] {
+      background: var(--color-surface-strong);
+      color: var(--color-text-inverse);
+    }
+
+    .tabpanel {
+      display: none;
+    }
+
+    .tabpanel[data-active="true"] {
+      display: block;
+    }
+
+    .pre-wrap {
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(250, 250, 249, 0.08);
+      color: var(--color-code-fg);
+      border: 1px solid rgba(250, 250, 249, 0.14);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-family: var(--font-family-primary);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background var(--motion-instant) var(--motion-ease);
+    }
+
+    .copy-btn i {
+      font-size: 12px;
+    }
+
+    .copy-btn:hover {
+      background: rgba(250, 250, 249, 0.16);
+    }
+
+    .copy-btn.copied {
+      background: rgba(132, 204, 22, 0.18);
+      color: #a3d9a5;
+      border-color: rgba(132, 204, 22, 0.3);
+    }
+
+    .behavior {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--font-size-sm);
+      background: var(--color-surface-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .behavior th,
+    .behavior td {
+      text-align: left;
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .behavior th {
+      font-family: var(--font-family-primary);
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+      white-space: nowrap;
+      background: var(--color-surface-muted);
+    }
+
+    .behavior td:first-child {
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .behavior td {
+      color: var(--color-text-secondary);
+    }
+
+    .behavior tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .behavior code {
+      font-size: 0.86em;
+    }
+
+    .behavior .y {
+      color: var(--color-success);
+      font-weight: 700;
+    }
+
+    .behavior .n {
+      color: var(--color-error);
+      font-weight: 700;
+    }
+
+    .behavior .mid {
+      color: #a35500;
+      font-weight: 700;
+    }
+
+    [data-theme="dark"] .behavior .mid {
+      color: #e8b552;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    @media (max-width: 720px) {
+
+      .behavior,
+      .behavior tbody,
+      .behavior tr,
+      .behavior td,
+      .behavior th {
+        display: block;
+      }
+
+      .behavior thead {
+        display: none;
+      }
+
+      .behavior tr {
+        border-bottom: 1px solid var(--color-border-strong);
+        padding: var(--space-2) 0;
+      }
+
+      .behavior td {
+        border: 0;
+        padding: var(--space-1) var(--space-4);
+      }
+
+      .behavior td::before {
+        content: attr(data-label) ": ";
+        font-weight: 700;
+        color: var(--color-text-tertiary);
+        display: inline-block;
+        min-width: 110px;
+      }
+
+      .behavior td:first-child::before {
+        content: "";
+      }
+    }
+
+    .faq details {
+      background: var(--color-surface-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-4) var(--space-5);
+      margin-bottom: var(--space-2);
+      transition: border-color var(--motion-instant) var(--motion-ease);
+    }
+
+    .faq details:hover {
+      border-color: var(--color-border-strong);
+    }
+
+    .faq details[open] {
+      border-color: var(--color-border-strong);
+    }
+
+    .faq summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-family-primary);
+      font-size: var(--font-size-md);
+    }
+
+    .faq summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq summary i.ph-plus,
+    .faq summary i.ph-minus {
+      margin-left: auto;
+      color: var(--color-text-secondary);
+    }
+
+    .faq details:not([open]) summary i.ph-minus {
+      display: none;
+    }
+
+    .faq details[open] summary i.ph-plus {
+      display: none;
+    }
+
+    .faq details p {
+      margin: var(--space-3) 0 0;
+      line-height: 1.65;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-family: var(--font-family-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .badge.now {
+      background: color-mix(in srgb, var(--color-success) 14%, transparent);
+      color: var(--color-success);
+    }
+
+    .badge.next {
+      background: color-mix(in srgb, var(--color-surface-strong) 12%, transparent);
+      color: var(--color-text-primary);
+      border: 1px solid var(--color-border-strong);
+    }
+
+    .badge.later {
+      background: color-mix(in srgb, var(--color-text-tertiary) 14%, transparent);
+      color: var(--color-text-tertiary);
+    }
+
+    .author-card {
+      display: grid;
+      gap: var(--space-5);
+      grid-template-columns: 1fr;
+      background: var(--color-surface-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+
+    @media (min-width: 760px) {
+      .author-card {
+        grid-template-columns: 280px 1fr;
+        align-items: start;
+        gap: var(--space-6);
+      }
+    }
+
+    .author-card .author-name {
+      font-family: var(--font-family-display);
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--color-text-primary);
+      margin: 0 0 var(--space-2);
+    }
+
+    .author-card .author-role {
+      font-family: var(--font-family-primary);
+      font-size: var(--font-size-lg);
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      line-height: 1.4;
+      color: var(--color-text-secondary);
+      margin: 0 0 var(--space-4);
+    }
+
+    .author-card ul.author-links {
+      list-style: none;
+      padding: 0;
+      margin: var(--space-3) 0 0;
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    .author-card ul.author-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+      width: max-content;
+      text-decoration: none;
+    }
+
+    .author-card ul.author-links a:hover {
+      color: var(--color-text-primary);
+      text-decoration: none;
+    }
+
+    .author-card ul.author-links i,
+    .author-card ul.author-links .x-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+      color: var(--color-text-tertiary);
+      transition: color var(--motion-instant) var(--motion-ease);
+    }
+
+    .author-card ul.author-links a:hover i,
+    .author-card ul.author-links a:hover .x-icon {
+      color: var(--color-text-primary);
+    }
+
+    /* Footer (always uses the dark canvas; palette is hardcoded so dark
+       mode does NOT invert text-inverse and break readability) */
+    footer.site {
+      background: #000000;
+      color: #fafaf9;
+      padding: var(--space-6) 0 var(--space-5);
+      margin-top: 0;
+      border-top: 1px solid #2a2724;
+    }
+
+    footer.site .footer-grid {
+      display: grid;
+      gap: var(--space-5);
+      grid-template-columns: 1fr;
+      margin-bottom: var(--space-5);
+    }
+
+    @media (min-width: 760px) {
+      footer.site .footer-grid {
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+      }
+    }
+
+    footer.site .brand {
+      color: #fafaf9;
+    }
+
+    footer.site .brand:hover {
+      color: #fafaf9;
+      text-decoration: none;
+    }
+
+    footer.site .brand .mark {
+      background: #fafaf9;
+      color: #000000;
+    }
+
+    footer.site .brand-block p {
+      color: #a8a29e;
+      font-size: var(--font-size-sm);
+      margin: var(--space-2) 0 0;
+      max-width: 42ch;
+      line-height: 1.6;
+    }
+
+    footer.site h3 {
+      color: #fafaf9;
+      font-size: var(--font-size-sm);
+      font-weight: 700;
+      margin: 0 0 var(--space-2);
+    }
+
+    footer.site ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    footer.site li {
+      margin-bottom: var(--space-1);
+    }
+
+    footer.site a {
+      color: #d6d3d1;
+      font-size: var(--font-size-sm);
+      transition: color var(--motion-instant) var(--motion-ease);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    footer.site a:hover {
+      color: #fafaf9;
+      text-decoration: none;
+    }
+
+    footer.site a i,
+    footer.site a .x-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+    }
+
+    footer.site .bottom-bar {
+      border-top: 1px solid #2a2724;
+      padding-top: var(--space-4);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer.site .bottom-bar .legal,
+    footer.site .bottom-bar .legal * {
+      font-size: var(--font-size-xs);
+      color: #a8a29e;
+      max-width: 60ch;
+      line-height: 1.6;
+    }
+
+    footer.site .bottom-bar .legal a {
+      color: #d6d3d1;
+    }
+
+    footer.site .bottom-bar .legal a:hover {
+      color: #fafaf9;
+    }
+
+    footer.site .by-takk {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      color: #d6d3d1;
+      font-size: var(--font-size-xs);
+      letter-spacing: 0.04em;
+    }
+
+    footer.site .by-takk img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #fafaf9;
+    }
+
+    footer.site .by-takk:hover {
+      color: #fafaf9;
+      text-decoration: none;
+    }
+
+    /* Custom inline SVG icon for X (the artist formerly known as Twitter) -
+       Phosphor 1.4.2 does not ship an x-logo glyph; we keep the rest on
+       Phosphor and only inline the X mark, sized and coloured like a Phosphor
+       icon so it lives in the same rhythm. */
+    .x-icon {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.125em;
+      fill: currentColor;
+      flex: 0 0 auto;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      animation: rise 600ms var(--motion-ease) forwards;
+    }
+
+    @keyframes rise {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site" role="banner">
+    <div class="wrap nav">
+      <a href="#top" class="brand" aria-label="NoeticOS home">
+        <span class="mark" aria-hidden="true">n</span>
+        <span>NoeticOS</span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="#components">What it does</a></li>
+          <li><a href="#safety">Safety</a></li>
+          <li><a href="#quickstart">Quickstart</a></li>
+          <li><a href="#parameters">Parameters</a></li>
+          <li><a href="#surfaces">Surfaces</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="https://github.com/davccavalcante/noeticos" rel="noopener external">GitHub</a></li>
+        </ul>
+      </nav>
+      <div class="nav-tail">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <i class="ph-moon" aria-hidden="true"></i>
+          <i class="ph-sun" aria-hidden="true"></i>
+        </button>
+        <a class="btn btn--sm" href="https://www.npmjs.com/package/@takk/noeticos" rel="noopener external">
+          <i class="ph-download-simple" aria-hidden="true"></i>
+          <span>Get on npm</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="hero" id="top">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div class="reveal">
+            <span class="eyebrow"><i class="ph-package" aria-hidden="true"></i>@takk/noeticos - v1.0.0 -
+              Apache-2.0</span>
+            <h1>Tune the runtime while it runs.</h1>
+            <p class="lead">
+              Agent parameters are usually frozen at deploy time: one model, one temperature, one retry budget for
+              every task the agent will ever see. <strong>NoeticOS</strong> is the JIT compiler for Massive
+              Intelligence (IM) agents. It classifies every task, learns the optimal parameters per task class with
+              confidence-bound bandits, promotes changes only through deterministic canary rollouts with automatic
+              rollback, and records every decision with the numeric evidence behind it. Catch the optimum while it
+              runs.
+            </p>
+            <div class="pre-wrap" style="margin-top: var(--space-5); max-width: 480px;">
+              <button class="copy-btn" data-copy="pnpm add @takk/noeticos" aria-label="Copy install command"><i
+                  class="ph-copy" aria-hidden="true"></i><span>Copy</span></button>
+              <pre><code><span class="tk-keyword">pnpm</span> add @takk/noeticos</code></pre>
+            </div>
+            <div class="hero-cta">
+              <a class="btn" href="#quickstart"><i class="ph-arrow-down"
+                  aria-hidden="true"></i><span>Quickstart</span></a>
+              <a class="btn btn--secondary" href="https://github.com/davccavalcante/noeticos" rel="noopener external"><i
+                  class="ph-github-logo" aria-hidden="true"></i><span>View on GitHub</span></a>
+            </div>
+            <div class="hero-meta">
+              <div class="item"><span class="k">159</span><span class="v">tests passing</span></div>
+              <div class="item"><span class="k">92.15%</span><span class="v">line coverage</span></div>
+              <div class="item"><span class="k">0</span><span class="v">runtime deps</span></div>
+              <div class="item"><span class="k">11.15 kB</span><span class="v">brotli core</span></div>
+            </div>
+          </div>
+          <div class="hero-art reveal" aria-hidden="true">
+            <img src="assets/noeticos.png" alt="NoeticOS project mark" width="500" height="500" loading="eager"
+              decoding="async">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="components" class="alt">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow"><i class="ph-stack" aria-hidden="true"></i>What it does</span>
+          <h2>Five components, one invariant.</h2>
+          <p><code>createNoeticOS()</code> wires a classifier, per-class bandits, a canary rollout judge, an audit
+            log, and pluggable state behind two calls: <code>recommend()</code> before the task,
+            <code>report()</code> after it.</p>
+        </div>
+        <div class="grid grid--3">
+          <article class="card">
+            <div class="icon-wrap"><i class="ph-tag" aria-hidden="true"></i></div>
+            <h3>Task classifier</h3>
+            <p>Sorts every task into one of 10 task kinds plus an unknown fallback (<code>factual-qa</code>,
+              <code>code-generation</code>, <code>extraction</code>, <code>summarization</code>, and more) from
+              keyword and shape signals: prompt length, tool count, caller metadata. A caller-asserted kind overrides
+              the classifier entirely.</p>
+            <p class="benefit">Parameters are learned per task class, not per agent average, and every recommendation
+              reports the classification confidence and the exact signals that fired.</p>
+          </article>
+          <article class="card">
+            <div class="icon-wrap"><i class="ph-strategy" aria-hidden="true"></i></div>
+            <h3>Parameter bandits</h3>
+            <p>One discounted UCB1-tuned bandit per parameter dimension and task class, across six dimensions:
+              <code>model</code>, <code>temperature</code>, <code>topP</code>, <code>maxTurns</code>,
+              <code>retryBudget</code>, <code>contextShare</code>. A global exponential discount tick keeps the
+              statistics tracking non-stationary workloads: idle arms lose effective count, so stale optima are
+              re-challenged instead of frozen out.</p>
+            <p class="benefit">The engine keeps adapting when the workload shifts, without a retraining step or an
+              offline pipeline.</p>
+          </article>
+          <article class="card">
+            <div class="icon-wrap"><i class="ph-rocket-launch" aria-hidden="true"></i></div>
+            <h3>Canary rollout</h3>
+            <p>Cohort assignment is deterministic: a seeded hash sends a fixed share of executions (10% by default)
+              to the canary, which differs from the baseline in exactly one parameter. Promotion is statistically
+              gated; rollback fires earlier by design, backed by a hard quality floor and a futility bound.</p>
+            <p class="benefit">Any reward difference is attributable to the single parameter under test, so every
+              verdict has one cause.</p>
+          </article>
+          <article class="card">
+            <div class="icon-wrap"><i class="ph-file-text" aria-hidden="true"></i></div>
+            <h3>Decision audit</h3>
+            <p>Every promotion, rollback, freeze, and release is appended to an immutable decision log:
+              type, parameter, from and to values, human-readable reasoning, and the numeric evidence (means,
+              confidence bounds, sample counts) that justified it.</p>
+            <p class="benefit">When someone asks why the temperature changed on Tuesday, the answer is one
+              <code>decisions()</code> call away, with the statistics attached.</p>
+          </article>
+          <article class="card">
+            <div class="icon-wrap"><i class="ph-database" aria-hidden="true"></i></div>
+            <h3>State</h3>
+            <p>Learned state serializes to a versioned snapshot of aggregate statistics only. <code>memoryState</code>
+              and <code>fileState</code> ship in the box; any <code>StateBackend</code> with <code>load</code> and
+              <code>save</code> plugs in. Persistence is best-effort by contract.</p>
+            <p class="benefit">A failing backend never blocks recommendation traffic, and profiles survive restarts
+              when you want them to.</p>
+          </article>
+          <article class="card">
+            <div class="icon-wrap"><i class="ph-shield-check" aria-hidden="true"></i></div>
+            <h3>One invariant</h3>
+            <p>Exploration never touches baseline traffic. The canary cohort, 10% of executions by default, differs
+              from the stable configuration in exactly one parameter at a time, and scenario S7 of the CI benchmark
+              re-proves the contract on every run, zero violations allowed.</p>
+            <p class="benefit">The riskiest thing the engine ever does is serve a small, audited share of traffic one
+              value away from stable, and it can always show the evidence.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="safety">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow"><i class="ph-shield-check" aria-hidden="true"></i>The safety invariant</span>
+          <h2>Exploration never touches baseline traffic.</h2>
+          <p>The invariant is stated in the type contract and enforced on every code path. The asymmetry is
+            deliberate: a missed improvement costs less than a regression served to baseline traffic.</p>
+        </div>
+        <div class="rules">
+          <div class="rule dont">
+            <span class="label"><i class="ph-x-circle" aria-hidden="true"></i>The engine never</span>
+            <h3>Five prohibitions</h3>
+            <ol>
+              <li><strong>explore-on-baseline</strong> Baseline executions always receive the current stable values.
+                Exploration lives exclusively inside the canary cohort.</li>
+              <li><strong>two-moving-parts</strong> A canary never differs from the baseline in more than one
+                parameter. Attribution requires a single cause.</li>
+              <li><strong>premature-promotion</strong> No promotion below <code>minSamplesPerArm</code> (8) canary
+                samples or below the configured confidence (0.95).</li>
+              <li><strong>audit-edits</strong> Decision entries are append-only: never edited, never deleted,
+                monotonic sequence numbers.</li>
+              <li><strong>prompt-retention</strong> Prompts and tool arguments are never stored. Snapshots,
+                decisions, and telemetry carry aggregate statistics only.</li>
+            </ol>
+          </div>
+          <div class="rule do">
+            <span class="label"><i class="ph-check-circle" aria-hidden="true"></i>The engine always</span>
+            <h3>Five obligations</h3>
+            <ol>
+              <li><strong>deterministic-cohorts</strong> A seeded hash assigns cohorts (<code>canaryShare</code> 0.1
+                by default), so assignment is reproducible run over run.</li>
+              <li><strong>gated-promotion</strong> Welch's t test under a Bonferroni look budget, plus the
+                candidate's lower confidence bound clearing the baseline's upper bound.</li>
+              <li><strong>earlier-rollback</strong> An exact binomial test on failures, a Wilson score bound against
+                the quality floor, and a futility bound at four times the sample budget.</li>
+              <li><strong>recorded-evidence</strong> Every decision carries the means, bounds, and sample counts that
+                justified it.</li>
+              <li><strong>freeze-under-turbulence</strong> Credential rotation or behavioral drift signals pause
+                experiments through <code>freezeTuning</code> until the world stabilizes.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quickstart" class="alt">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow"><i class="ph-download-simple" aria-hidden="true"></i>Quickstart</span>
+          <h2>Recommend, run, report.</h2>
+        </div>
+
+        <h3 style="margin-top: 0;">1. Add the package</h3>
+        <div class="tablist" role="tablist" aria-label="Package manager">
+          <button class="tab" role="tab" aria-selected="true" aria-controls="pm-pnpm" id="tab-pnpm">pnpm</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="pm-npm" id="tab-npm">npm</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="pm-yarn" id="tab-yarn">yarn</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="pm-bun" id="tab-bun">bun</button>
+        </div>
+        <div id="pm-pnpm" role="tabpanel" class="tabpanel" data-active="true" aria-labelledby="tab-pnpm">
+          <div class="pre-wrap">
+            <button class="copy-btn" data-copy="pnpm add @takk/noeticos" aria-label="Copy pnpm command"><i
+                class="ph-copy" aria-hidden="true"></i><span>Copy</span></button>
+            <pre><code><span class="tk-keyword">pnpm</span> add @takk/noeticos</code></pre>
+          </div>
+        </div>
+        <div id="pm-npm" role="tabpanel" class="tabpanel" aria-labelledby="tab-npm">
+          <div class="pre-wrap">
+            <button class="copy-btn" data-copy="npm install @takk/noeticos" aria-label="Copy npm command"><i
+                class="ph-copy" aria-hidden="true"></i><span>Copy</span></button>
+            <pre><code><span class="tk-keyword">npm</span> install @takk/noeticos</code></pre>
+          </div>
+        </div>
+        <div id="pm-yarn" role="tabpanel" class="tabpanel" aria-labelledby="tab-yarn">
+          <div class="pre-wrap">
+            <button class="copy-btn" data-copy="yarn add @takk/noeticos" aria-label="Copy yarn command"><i
+                class="ph-copy" aria-hidden="true"></i><span>Copy</span></button>
+            <pre><code><span class="tk-keyword">yarn</span> add @takk/noeticos</code></pre>
+          </div>
+        </div>
+        <div id="pm-bun" role="tabpanel" class="tabpanel" aria-labelledby="tab-bun">
+          <div class="pre-wrap">
+            <button class="copy-btn" data-copy="bun add @takk/noeticos" aria-label="Copy bun command"><i class="ph-copy"
+                aria-hidden="true"></i><span>Copy</span></button>
+            <pre><code><span class="tk-keyword">bun</span> add @takk/noeticos</code></pre>
+          </div>
+        </div>
+
+        <h3 style="margin-top: var(--space-5);">2. Wrap each execution in the two-call loop</h3>
+        <div class="pre-wrap">
+          <button class="copy-btn" data-copy="import { createNoeticOS } from '@takk/noeticos';
+
+const runtime = createNoeticOS({
+  objective: 'cost',
+  qualityFloor: { minSuccessRate: 0.9 },
+});
+
+// Before the task: the full parameter set for this execution.
+const rec = runtime.recommend({
+  agentId: 'support-bot',
+  prompt: 'Summarize this incident thread for the on-call engineer.',
+});
+// rec.parameters -> { temperature: 0.4, topP: 1, maxTurns: 32,
+//                     retryBudget: 1, contextShare: 0.6 }
+// rec.cohort -> 'baseline' or 'canary'; rec.reasoning explains every value.
+
+// ... run the agent task with rec.parameters applied ...
+
+// After the task: report what happened.
+runtime.report({
+  executionId: rec.executionId,
+  latencyMs: 2310,
+  costUsd: 0.0042,
+  turns: 3,
+  finishReason: 'stop',
+});" aria-label="Copy quickstart code"><i class="ph-copy" aria-hidden="true"></i><span>Copy</span></button>
+          <pre><code><span class="tk-keyword">import</span> { createNoeticOS } <span class="tk-keyword">from</span> <span class="tk-string">'@takk/noeticos'</span>;
+
+<span class="tk-keyword">const</span> runtime = <span class="tk-func">createNoeticOS</span>({
+  objective: <span class="tk-string">'cost'</span>,
+  qualityFloor: { minSuccessRate: <span class="tk-num">0.9</span> },
+});
+
+<span class="tk-comment">// Before the task: the full parameter set for this execution.</span>
+<span class="tk-keyword">const</span> rec = runtime.<span class="tk-func">recommend</span>({
+  agentId: <span class="tk-string">'support-bot'</span>,
+  prompt: <span class="tk-string">'Summarize this incident thread for the on-call engineer.'</span>,
+});
+<span class="tk-comment">// rec.parameters -&gt; { temperature: 0.4, topP: 1, maxTurns: 32,
+//                     retryBudget: 1, contextShare: 0.6 }
+// rec.cohort -&gt; 'baseline' or 'canary'; rec.reasoning explains every value.</span>
+
+<span class="tk-comment">// ... run the agent task with rec.parameters applied ...</span>
+
+<span class="tk-comment">// After the task: report what happened.</span>
+runtime.<span class="tk-func">report</span>({
+  executionId: rec.executionId,
+  latencyMs: <span class="tk-num">2310</span>,
+  costUsd: <span class="tk-num">0.0042</span>,
+  turns: <span class="tk-num">3</span>,
+  finishReason: <span class="tk-string">'stop'</span>,
+});</code></pre>
+        </div>
+
+        <h3 style="margin-top: var(--space-5);">3. Watch the decisions land</h3>
+        <div class="pre-wrap">
+          <button class="copy-btn" data-copy="runtime.on((event) => {
+  if (event.type === 'decision.recorded') {
+    console.log(event.entry.reasoning, event.entry.evidence);
+  }
+});
+
+const audit = runtime.decisions({ agentId: 'support-bot', limit: 20 });"
+            aria-label="Copy telemetry code"><i class="ph-copy" aria-hidden="true"></i><span>Copy</span></button>
+          <pre><code>runtime.<span class="tk-func">on</span>((event) =&gt; {
+  <span class="tk-keyword">if</span> (event.type === <span class="tk-string">'decision.recorded'</span>) {
+    console.<span class="tk-func">log</span>(event.entry.reasoning, event.entry.evidence);
+  }
+});
+
+<span class="tk-keyword">const</span> audit = runtime.<span class="tk-func">decisions</span>({ agentId: <span class="tk-string">'support-bot'</span>, limit: <span class="tk-num">20</span> });</code></pre>
+        </div>
+        <p style="font-size: var(--font-size-sm); color: var(--color-text-tertiary);">
+          <code>recommend()</code> is synchronous and allocation-light, safe on the hot path. Outcomes with unknown
+          execution ids are ignored, so a crash between the two calls cannot corrupt learning.
+        </p>
+      </div>
+    </section>
+
+    <section id="parameters">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow"><i class="ph-cpu" aria-hidden="true"></i>Parameter grid</span>
+          <h2>Six dimensions, discrete arms, learned per task class.</h2>
+          <p>Omitted dimensions get the default arms below; the <code>model</code> dimension is tuned only when
+            candidates are declared. Locked parameters never enter a canary, and
+            <code>constraints.baseline</code> overrides any starting value.</p>
+        </div>
+        <div class="table-wrap">
+          <table class="behavior">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Default arms</th>
+                <th>What it controls</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Parameter"><code>model</code></td>
+                <td data-label="Default arms">declared <code>ModelCandidate</code> list (no default)</td>
+                <td data-label="Controls">Which model id serves the class. Tier hints (<code>fast</code>,
+                  <code>balanced</code>, <code>frontier</code>) inform reasoning strings, never rewards.</td>
+              </tr>
+              <tr>
+                <td data-label="Parameter"><code>temperature</code></td>
+                <td data-label="Default arms"><code>0, 0.2, 0.4, 0.7, 1.0</code></td>
+                <td data-label="Controls">Sampling temperature.</td>
+              </tr>
+              <tr>
+                <td data-label="Parameter"><code>topP</code></td>
+                <td data-label="Default arms"><code>0.9, 1.0</code></td>
+                <td data-label="Controls">Nucleus sampling mass.</td>
+              </tr>
+              <tr>
+                <td data-label="Parameter"><code>maxTurns</code></td>
+                <td data-label="Default arms"><code>8, 16, 32, 64</code></td>
+                <td data-label="Controls">Ceiling on agent loop turns per execution.</td>
+              </tr>
+              <tr>
+                <td data-label="Parameter"><code>retryBudget</code></td>
+                <td data-label="Default arms"><code>0, 1, 3</code></td>
+                <td data-label="Controls">Retries allowed per execution.</td>
+              </tr>
+              <tr>
+                <td data-label="Parameter"><code>contextShare</code></td>
+                <td data-label="Default arms"><code>0.4, 0.6, 0.8</code></td>
+                <td data-label="Controls">Fraction of the context window the agent may fill before NoeticOS
+                  recommends trimming.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="objectives" class="alt">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow"><i class="ph-scales" aria-hidden="true"></i>Objective presets</span>
+          <h2>Say what good means; the reward follows.</h2>
+          <p>Every outcome is scored into a composite reward from quality, cost, and latency terms, normalized
+            against the running per-class statistics. Presets fix the weights; custom weights are normalized to sum
+            to 1. Quality uses the explicit <code>qualityScore</code> when reported, otherwise it is derived from the
+            finish reason, tool failures, and detected tool loops.</p>
+        </div>
+        <div class="table-wrap">
+          <table class="behavior">
+            <thead>
+              <tr>
+                <th>Preset</th>
+                <th>Quality</th>
+                <th>Cost</th>
+                <th>Latency</th>
+                <th>Use it when</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Preset"><code>balanced</code></td>
+                <td data-label="Quality">0.5</td>
+                <td data-label="Cost">0.25</td>
+                <td data-label="Latency">0.25</td>
+                <td data-label="When">Default. No single term dominates.</td>
+              </tr>
+              <tr>
+                <td data-label="Preset"><code>cost</code></td>
+                <td data-label="Quality">0.35</td>
+                <td data-label="Cost">0.5</td>
+                <td data-label="Latency">0.15</td>
+                <td data-label="When">Spend is the constraint. The quality floor still applies.</td>
+              </tr>
+              <tr>
+                <td data-label="Preset"><code>latency</code></td>
+                <td data-label="Quality">0.35</td>
+                <td data-label="Cost">0.15</td>
+                <td data-label="Latency">0.5</td>
+                <td data-label="When">Interactive agents where waiting is the real cost.</td>
+              </tr>
+              <tr>
+                <td data-label="Preset"><code>quality</code></td>
+                <td data-label="Quality">0.7</td>
+                <td data-label="Cost">0.15</td>
+                <td data-label="Latency">0.15</td>
+                <td data-label="When">Correctness-critical work; cost and latency are tiebreakers.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="simulate">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow"><i class="ph-terminal-window" aria-hidden="true"></i>Deterministic demo</span>
+          <h2>One command, a byte-identical transcript.</h2>
+          <p>The CLI ships a synthetic workload that exercises the whole loop. One seed yields one byte-identical
+            transcript; the excerpt below is real output, truncated in the middle. The same tuned-versus-static
+            comparison runs as a 9-scenario benchmark gate in CI.</p>
+        </div>
+        <div class="pre-wrap">
+          <button class="copy-btn" data-copy="noeticos simulate --executions 2400 --seed 7"
+            aria-label="Copy simulate command"><i class="ph-copy" aria-hidden="true"></i><span>Copy</span></button>
+          <pre><code><span class="tk-comment">$</span> <span class="tk-keyword">noeticos</span> simulate --executions <span class="tk-num">2400</span> --seed <span class="tk-num">7</span>
+decision canary.started factual-qa temperature 0.4 -&gt; 0
+decision canary.started creative-writing temperature 0.4 -&gt; 0
+decision canary.started extraction temperature 0.4 -&gt; 0
+decision canary.promoted factual-qa temperature 0.4 -&gt; 0
+decision canary.started factual-qa topP 1 -&gt; 0.9
+decision canary.rolledback factual-qa topP 0.9 -&gt; 1
+<span class="tk-comment">(19 decision lines omitted)</span>
+--- summary ---
+executions: 2400
+decisions: 25 (2 promoted, 9 rolled back)
+canary share observed: 0.115
+per-kind promoted parameters:
+factual-qa: temperature=0 topP=1 maxTurns=32 retryBudget=1 contextShare=0.6
+creative-writing: temperature=0.4 topP=1 maxTurns=32 retryBudget=1 contextShare=0.6
+extraction: temperature=0.4 topP=1 maxTurns=8 retryBudget=1 contextShare=0.6
+counterfactual: identical workload and noise, static baseline versus tuned
+static baseline: cost=$17.6000 quality=0.879
+noeticos tuned: cost=$8.0000 quality=0.925
+delta: cost -54.5% quality +5.3%</code></pre>
+        </div>
+        <p style="margin-top: var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-tertiary);">
+          Same workload, same noise: 54.5% lower cost at 5.3% higher quality than the static baseline, on this
+          synthetic workload. Run it yourself; the transcript will match byte for byte.
+        </p>
+      </div>
+    </section>
+
+    <section id="surfaces" class="alt">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow"><i class="ph-package" aria-hidden="true"></i>Surfaces</span>
+          <h2>Seven surfaces, one engine.</h2>
+          <p>Every entry point ships ESM and CJS with its own type declarations. Sizes are brotli over the published
+            build, enforced by size-limit in CI.</p>
+        </div>
+        <div class="grid grid--3">
+          <article class="card">
+            <span class="badge next">11.15 kB brotli</span>
+            <h3><code>@takk/noeticos</code></h3>
+            <p>The core engine: <code>createNoeticOS</code>, classifier, bandits, rollout judge, decision log,
+              objective presets, memory and file state. Zero runtime dependencies.</p>
+          </article>
+          <article class="card">
+            <span class="badge next">863 B brotli</span>
+            <h3><code>@takk/noeticos/otel</code></h3>
+            <p>OTel GenAI ingestion: <code>taskFromSpan</code>, <code>outcomeFromSpan</code>, and
+              <code>parametersFromSpan</code> read GenAI semantic-convention spans structurally, importing no
+              OpenTelemetry package. Prompt content is never extracted.</p>
+          </article>
+          <article class="card">
+            <span class="badge next">981 B brotli</span>
+            <h3><code>@takk/noeticos/vercel</code></h3>
+            <p>Packaged Vercel AI SDK middleware: <code>noeticosMiddleware</code> for
+              <code>wrapLanguageModel</code> applies the recommended temperature and topP per call and reports usage,
+              latency, and finish reason automatically.</p>
+          </article>
+          <article class="card">
+            <span class="badge next">595 B brotli</span>
+            <h3><code>@takk/noeticos/integrations</code></h3>
+            <p>Structural bridges into the family stack below: sibling signals freeze and release tuning, and learned
+              models feed routing. The siblings are optional peers, never imported.</p>
+          </article>
+          <article class="card">
+            <span class="badge next">10.54 kB brotli</span>
+            <h3><code>@takk/noeticos/web</code></h3>
+            <p>Browser entry: the full engine minus the Node file backend, so bundles never reference
+              <code>node:fs</code>.</p>
+          </article>
+          <article class="card">
+            <span class="badge next">10.54 kB brotli</span>
+            <h3><code>@takk/noeticos/edge</code></h3>
+            <p>Edge entry for Cloudflare Workers, Vercel Edge, Deno, and Bun. Deterministic seeded PRNG, no platform
+              randomness, no Node-only APIs.</p>
+          </article>
+          <article class="card">
+            <span class="badge next">ships in the package</span>
+            <h3><code>noeticos</code> CLI</h3>
+            <p><code>simulate</code> runs the deterministic demo, <code>inspect</code> renders a state snapshot,
+              <code>version</code> prints the package version, and <code>serve</code> starts a local HTTP bridge
+              that exposes <code>recommend</code>/<code>report</code> to non-Node runtimes, Hermes Agent included:
+              constant-time bearer-token auth, a non-loopback refusal without a token, JSON content-type
+              enforcement, and gated CORS preflight.</p>
+          </article>
+          <article class="card">
+            <span class="badge next">0 dependencies</span>
+            <h3>Statistics, from scratch</h3>
+            <p>The numerical layer behind every surface is written from the literature: Welford moments, P2 quantile
+              estimation, the exact one-sided binomial tail, the exact Student t tail via the regularized incomplete
+              beta, Wilson intervals, and discounted UCB1-tuned bounds. Nothing to audit transitively.</p>
+          </article>
+          <article class="card">
+            <span class="badge next">6 event kinds</span>
+            <h3>Telemetry stream</h3>
+            <p>One <code>on(listener)</code> call streams the typed engine events: recommendations issued, outcomes
+              recorded with their reward, every audit decision, loop detection, limit warnings, and tuning releases.
+              A throwing listener never breaks the engine.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="family">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow"><i class="ph-puzzle-piece" aria-hidden="true"></i>Family stack</span>
+          <h2>Four packages, one runtime layer.</h2>
+          <p>NoeticOS is the adaptive layer of the @takk family. Each sibling owns one concern, and the bridges keep
+            every canary verdict attributable to exactly one cause: tuning freezes while credentials rotate or
+            behavior drifts, and resumes when the world stabilizes.</p>
+        </div>
+        <div class="grid grid--3">
+          <article class="card">
+            <div class="icon-wrap"><i class="ph-lock-key" aria-hidden="true"></i></div>
+            <h3><code>@takk/keymesh</code></h3>
+            <p>API key rotation, failover, and circuit breaking for provider credentials. The bridge freezes tuning
+              while keys are in flux and releases it after a successful rotation.</p>
+            <a href="https://github.com/davccavalcante/keymesh" rel="noopener external"><i class="ph-github-logo"
+                aria-hidden="true"></i> davccavalcante/keymesh</a>
+          </article>
+          <article class="card">
+            <div class="icon-wrap"><i class="ph-shuffle" aria-hidden="true"></i></div>
+            <h3><code>@takk/modelchain</code></h3>
+            <p>Model routing and fallback chains across providers. The read-side bridge exposes the model NoeticOS
+              has learned per agent and task class to any routing strategy.</p>
+            <a href="https://github.com/davccavalcante/modelchain" rel="noopener external"><i class="ph-github-logo"
+                aria-hidden="true"></i> davccavalcante/modelchain</a>
+          </article>
+          <article class="card">
+            <div class="icon-wrap"><i class="ph-heartbeat" aria-hidden="true"></i></div>
+            <h3><code>@takk/behavioralai</code></h3>
+            <p>Behavioral observability for agents: learned fingerprints, drift detection, predictive alerts.
+              Critical drift freezes tuning until the agent recovers, keeping both audit trails truthful.</p>
+            <a href="https://github.com/davccavalcante/behavioralai" rel="noopener external"><i class="ph-github-logo"
+                aria-hidden="true"></i> davccavalcante/behavioralai</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="alt">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow"><i class="ph-question" aria-hidden="true"></i>FAQ</span>
+          <h2>Common questions.</h2>
+        </div>
+        <div class="faq">
+          <details open>
+            <summary><span>What does NoeticOS actually do?</span><i class="ph-plus" aria-hidden="true"></i><i
+                class="ph-minus" aria-hidden="true"></i></summary>
+            <p>It tunes the runtime parameters of your agents while they run. Before each task,
+              <code>recommend()</code> returns the full parameter set (model, temperature, topP, maxTurns,
+              retryBudget, contextShare) learned for that agent and task class. After the task,
+              <code>report()</code> feeds back what happened. The engine scores each outcome into a reward, updates
+              per-class bandits, and converges on the values that maximize your objective.</p>
+          </details>
+          <details>
+            <summary><span>Why call it the JIT compiler for agents?</span><i class="ph-plus" aria-hidden="true"></i><i
+                class="ph-minus" aria-hidden="true"></i></summary>
+            <p>A JIT compiler observes a running program and recompiles its hot paths with better optimizations,
+              without stopping it. NoeticOS does the same for agent runtime parameters: it observes executions,
+              identifies the hot task classes, and recompiles their parameter sets through canary experiments, while
+              production traffic keeps flowing.</p>
+          </details>
+          <details>
+            <summary><span>Is it safe to let a library tune production parameters?</span><i class="ph-plus"
+                aria-hidden="true"></i><i class="ph-minus" aria-hidden="true"></i></summary>
+            <p>That constraint shaped the whole design. NoeticOS never explores on baseline traffic: exploration is
+              confined to a deterministic canary cohort, 10% of executions by default, and a canary differs from the
+              baseline in exactly one parameter at a time. Promotion requires statistical confidence, rollback fires
+              on much weaker evidence by design, and a hard quality floor rolls back any violating canary regardless
+              of reward. Every change lands in an append-only audit log with the numbers that justified it.</p>
+          </details>
+          <details>
+            <summary><span>Which statistics gate promotion and rollback?</span><i class="ph-plus"
+                aria-hidden="true"></i><i class="ph-minus" aria-hidden="true"></i></summary>
+            <p>Promotion uses Welch's t test on mean reward, with the alpha spread across a Bonferroni look budget,
+              plus confidence-bound separation: the candidate's lower bound must clear the baseline's upper bound.
+              Rollback uses an exact binomial test on failure counts, a Wilson score upper bound checked against the
+              quality floor, and a futility bound that abandons a canary after four times the minimum sample budget
+              without a verdict.</p>
+          </details>
+          <details>
+            <summary><span>Does NoeticOS read or store my prompts?</span><i class="ph-plus" aria-hidden="true"></i><i
+                class="ph-minus" aria-hidden="true"></i></summary>
+            <p>No. The prompt is an optional classifier input and is never stored: snapshots, decisions, and
+              telemetry carry aggregate statistics only. The OTel ingestion deliberately ignores span events, which
+              can carry message bodies, and tool-call arguments enter only as caller-computed hashes.</p>
+          </details>
+          <details>
+            <summary><span>How many runtime dependencies does it add?</span><i class="ph-plus"
+                aria-hidden="true"></i><i class="ph-minus" aria-hidden="true"></i></summary>
+            <p>Zero. The core is 11.15 kB brotli and uses nothing beyond the JavaScript standard library; the
+              statistics (Welch, Wilson, exact binomial, P2 quantile estimators) are implemented inside the package.
+              The family bridges are structural, so even the optional peer packages are never imported by the engine
+              itself.</p>
+          </details>
+          <details>
+            <summary><span>Does it run in browsers and edge runtimes?</span><i class="ph-plus"
+                aria-hidden="true"></i><i class="ph-minus" aria-hidden="true"></i></summary>
+            <p>Yes. The web and edge entry points (10.54 kB brotli each) expose the full engine minus the Node file
+              backend, so bundles never reference <code>node:fs</code>. Cohort assignment uses a seeded deterministic
+              PRNG, not platform randomness, so the same configuration behaves identically in Node, Cloudflare
+              Workers, Vercel Edge, Deno, Bun, and the browser.</p>
+          </details>
+          <details>
+            <summary><span>How does it integrate with the Vercel AI SDK and OpenTelemetry?</span><i class="ph-plus"
+                aria-hidden="true"></i><i class="ph-minus" aria-hidden="true"></i></summary>
+            <p><code>@takk/noeticos/vercel</code> ships a packaged middleware for <code>wrapLanguageModel</code>: it
+              applies the recommended temperature and topP per call and reports token usage, latency, and finish
+              reason automatically, for <code>generateText</code> and <code>streamText</code> alike.
+              <code>@takk/noeticos/otel</code> converts OTel GenAI semantic-convention spans into task descriptors
+              and outcomes structurally, without importing any OpenTelemetry package; ingestion is live by design,
+              and replaying exported traces warms the cost and latency quantile bands rather than performing
+              historical credit assignment.</p>
+          </details>
+          <details>
+            <summary><span>What evidence backs version 1.0.0?</span><i class="ph-plus" aria-hidden="true"></i><i
+                class="ph-minus" aria-hidden="true"></i></summary>
+            <p>159 tests across 12 files run on Node 22 and Node 24, with 92.15% line coverage. A 9-scenario tuning
+              benchmark runs in CI, so a change that stops the engine from beating a static baseline fails the build.
+              Bundle size budgets are enforced per entry point, and every release is published with SLSA provenance
+              through GitHub Actions OIDC.</p>
+          </details>
+          <details>
+            <summary><span>What is the policy on breaking changes?</span><i class="ph-plus" aria-hidden="true"></i><i
+                class="ph-minus" aria-hidden="true"></i></summary>
+            <p>Strict SemVer 2.0.0 from 1.0.0. Everything exported from the six entry points is the public API, the
+              state snapshot schema is versioned (version 1 across the 1.x line), and new task kinds may be added in
+              minor releases, so exhaustive switches over <code>TaskKind</code> should keep a default branch.
+              Breaking changes require a major bump and a deprecation cycle.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="author">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow"><i class="ph-user-circle" aria-hidden="true"></i>Author</span>
+          <h2>Built and maintained by David C Cavalcante.</h2>
+        </div>
+        <div class="author-card">
+          <div>
+            <p class="author-name">David C Cavalcante</p>
+            <p class="author-role">Founder, Takk Innovate Studio</p>
+            <p>Product Engineer, IM Engineer, ML Engineer, LLM Architect, Researcher. Builder of the @takk family of
+              NPM packages for Massive Intelligence (IM) infrastructure.</p>
+            <ul class="author-links">
+              <li><a href="https://github.com/davccavalcante" rel="noopener external"><i class="ph-github-logo"
+                    aria-hidden="true"></i>github.com/davccavalcante</a></li>
+              <li><a href="https://linkedin.com/in/hellodav" rel="noopener external"><i class="ph-linkedin-logo"
+                    aria-hidden="true"></i>linkedin.com/in/hellodav</a></li>
+              <li><a href="https://x.com/davccavalcante" rel="noopener external"><svg class="x-icon" viewBox="0 0 24 24"
+                    fill="currentColor" aria-hidden="true">
+                    <path
+                      d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>x.com/davccavalcante</a></li>
+              <li><a href="https://takk.ag" rel="noopener external"><i class="ph-globe"
+                    aria-hidden="true"></i>takk.ag</a></li>
+              <li><a href="mailto:davcavalcante@proton.me"><i class="ph-envelope"
+                    aria-hidden="true"></i>davcavalcante@proton.me</a></li>
+            </ul>
+          </div>
+          <div>
+            <p>NoeticOS is the fourth package in a planned portfolio of NPM libraries targeting infrastructure for
+              Massive Intelligence (IM) agents through 2030: adaptive runtime intelligence here, with credential
+              rotation, model routing, and behavioral observability in its siblings. Adjacent research by the author
+              covers systemic intelligence frameworks (MAIC, HIM, NHE) published independently of this codebase, with
+              research notes on PhilPapers and PhilArchive linked from the repository README.</p>
+            <p>If NoeticOS cut your token bill or caught a bad parameter before it reached baseline traffic, the most
+              useful thing you can do is open a GitHub issue when you find an edge case the test suite missed. The
+              release runbook, the threat model, and the contributor agreement all live in the repository.</p>
+            <div class="hero-cta" style="margin-top: var(--space-4);">
+              <a class="btn" href="https://github.com/davccavalcante/noeticos" rel="noopener external"><i
+                  class="ph-book-open" aria-hidden="true"></i><span>Read the source</span></a>
+              <a class="btn btn--secondary" href="https://www.npmjs.com/package/@takk/noeticos"
+                rel="noopener external"><i class="ph-package" aria-hidden="true"></i><span>Get on npm</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="brand-block">
+          <a href="#top" class="brand">
+            <span class="mark" aria-hidden="true">n</span>
+            <span>NoeticOS</span>
+          </a>
+          <p>Adaptive runtime intelligence for Massive Intelligence (IM) agents. Zero runtime dependencies, every
+            decision audited.</p>
+        </div>
+        <div>
+          <h3>Package</h3>
+          <ul>
+            <li><a href="https://www.npmjs.com/package/@takk/noeticos" rel="noopener external"><i class="ph-package"
+                  aria-hidden="true"></i>npm</a></li>
+            <li><a href="https://github.com/davccavalcante/noeticos" rel="noopener external"><i class="ph-github-logo"
+                  aria-hidden="true"></i>GitHub</a></li>
+            <li><a href="https://github.com/davccavalcante/noeticos/releases" rel="noopener external"><i class="ph-tag"
+                  aria-hidden="true"></i>Releases</a></li>
+            <li><a href="https://github.com/davccavalcante/noeticos/issues" rel="noopener external"><i class="ph-bug"
+                  aria-hidden="true"></i>Issues</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Documentation</h3>
+          <ul>
+            <li><a href="https://github.com/davccavalcante/noeticos/blob/main/README.md" rel="noopener external"><i
+                  class="ph-file-text" aria-hidden="true"></i>README</a></li>
+            <li><a href="https://github.com/davccavalcante/noeticos/blob/main/SPEC.md" rel="noopener external"><i
+                  class="ph-file-text" aria-hidden="true"></i>SPEC</a></li>
+            <li><a href="https://github.com/davccavalcante/noeticos/blob/main/SECURITY.md" rel="noopener external"><i
+                  class="ph-shield" aria-hidden="true"></i>SECURITY</a></li>
+            <li><a href="https://github.com/davccavalcante/noeticos/blob/main/PRIVACY.md" rel="noopener external"><i
+                  class="ph-eye-slash" aria-hidden="true"></i>PRIVACY</a></li>
+            <li><a href="https://github.com/davccavalcante/noeticos/blob/main/CHANGELOG.md" rel="noopener external"><i
+                  class="ph-file-text" aria-hidden="true"></i>CHANGELOG</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Author</h3>
+          <ul>
+            <li><a href="https://github.com/davccavalcante" rel="noopener external"><i class="ph-github-logo"
+                  aria-hidden="true"></i>GitHub</a></li>
+            <li><a href="https://linkedin.com/in/hellodav" rel="noopener external"><i class="ph-linkedin-logo"
+                  aria-hidden="true"></i>LinkedIn</a></li>
+            <li><a href="https://x.com/davccavalcante" rel="noopener external"><svg class="x-icon" viewBox="0 0 24 24"
+                  fill="currentColor" aria-hidden="true">
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>davccavalcante</a></li>
+            <li><a href="https://takk.ag" rel="noopener external"><i class="ph-globe" aria-hidden="true"></i>takk.ag</a>
+            </li>
+            <li><a href="mailto:davcavalcante@proton.me"><i class="ph-envelope" aria-hidden="true"></i>Email</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="bottom-bar">
+        <p class="legal">Copyright 2026 David C Cavalcante. Apache License, Version 2.0. See <a
+            href="https://github.com/davccavalcante/noeticos/blob/main/NOTICE" rel="noopener external">NOTICE</a> for
+          attribution and third-party licenses.</p>
+        <a class="by-takk" href="https://takk.ag" rel="noopener external" aria-label="Built at Takk Innovate Studio">
+          <img src="assets/takk.png" width="28" height="28" alt="Takk Innovate Studio" loading="lazy" decoding="async">
+          <span>Built at Takk Innovate Studio</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/phosphor-icons@1.4.2/src/index.min.js" defer></script>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var stored = null;
+      try {stored = localStorage.getItem('noeticos-theme');} catch (_) { }
+      if (stored === 'light' || stored === 'dark') {root.setAttribute('data-theme', stored);}
+      var btn = document.getElementById('theme-toggle');
+      if (btn) {
+        btn.addEventListener('click', function () {
+          var current = root.getAttribute('data-theme');
+          var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var next;
+          if (!current) {next = systemDark ? 'light' : 'dark';}
+          else {next = current === 'dark' ? 'light' : 'dark';}
+          root.setAttribute('data-theme', next);
+          try {localStorage.setItem('noeticos-theme', next);} catch (_) { }
+        });
+      }
+    }());
+
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var text = btn.getAttribute('data-copy') || '';
+        var label = btn.querySelector('span');
+        var orig = label ? label.textContent : 'Copy';
+        var done = function () {
+          if (label) label.textContent = 'Copied';
+          btn.classList.add('copied');
+          setTimeout(function () {
+            if (label) label.textContent = orig;
+            btn.classList.remove('copied');
+          }, 1400);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, done);
+        } else {
+          try {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            done();
+          } catch (_) {done();}
+        }
+      });
+    });
+
+    document.querySelectorAll('[role="tablist"]').forEach(function (list) {
+      var tabs = list.querySelectorAll('[role="tab"]');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          tabs.forEach(function (t) {t.setAttribute('aria-selected', 'false');});
+          tab.setAttribute('aria-selected', 'true');
+          var targetId = tab.getAttribute('aria-controls');
+          var siblings = document.querySelectorAll('.tabpanel[data-active="true"]');
+          siblings.forEach(function (panel) {
+            if (panel.getAttribute('aria-labelledby') &&
+              Array.from(tabs).some(function (t) {return t.id === panel.getAttribute('aria-labelledby');})) {
+              panel.setAttribute('data-active', 'false');
+            }
+          });
+          var target = document.getElementById(targetId);
+          if (target) target.setAttribute('data-active', 'true');
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

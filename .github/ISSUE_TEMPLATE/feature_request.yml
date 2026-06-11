@@ -1,0 +1,90 @@
+name: "Feature request"
+description: "Propose a new public surface, behavior, or capability."
+title: "[feat] <one-line summary>"
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for proposing a feature. Substantive proposals (new public exports, new TaskKind or DecisionType variants, changes to the statistical procedures, new CLI flags or serve endpoints) require maintainer discussion BEFORE implementation. Please file this issue first and wait for triage before opening a PR.
+
+        Read [SPEC.md](https://github.com/davccavalcante/noeticos/blob/main/SPEC.md) before submitting. Several directions (joint optimization, cross-agent priors, contextual bandits) are known 1.1 candidates and may already be deliberately deferred.
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: "Target surface"
+      description: "Which part of the package should the feature live in?"
+      options:
+        - "core (engine / recommend / report / profiles / decisions)"
+        - "otel (@takk/noeticos/otel)"
+        - "vercel (@takk/noeticos/vercel)"
+        - "integrations (@takk/noeticos/integrations, new or existing bridge)"
+        - "web (@takk/noeticos/web)"
+        - "edge (@takk/noeticos/edge)"
+        - "cli (noeticos simulate / inspect / serve / new subcommand)"
+        - "state backends / snapshots"
+        - "statistics (bandits / rollout / reward)"
+        - "classifier / task taxonomy"
+        - "types / public API"
+        - "docs / examples"
+        - "CI / tooling"
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: "Motivation"
+      description: "What problem does this feature solve? Who has the problem (library user, CLI user, bridge integrator, maintainer)? Why is the current surface insufficient?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: "Proposed surface"
+      description: "What would the public API look like? Include type signatures, CLI flag names, endpoint shapes, option schemas - whatever is concrete enough to review."
+      render: typescript
+    validations:
+      required: true
+
+  - type: textarea
+    id: safety
+    attributes:
+      label: "Safety invariant impact"
+      description: "Does the proposal interact with the canary safety invariant (exploration never touches baseline traffic), the promotion gates, or the audit log? 'No interaction' with one line of justification is acceptable."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives considered"
+      description: "Other shapes you considered and rejected (and why). 'I did not think of any' is not acceptable for non-trivial features."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: semver
+    attributes:
+      label: "SemVer impact"
+      description: "Per SPEC.md section 7.2."
+      options:
+        - "Patch - bug fix or internal refactor"
+        - "Minor - new optional export, new optional field, new TaskKind / DecisionType / TelemetryEvent variant"
+        - "Major - breaking change (rename, remove, signature change, snapshot schema change, weakened benchmark bound)"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Pre-submission checklist"
+      options:
+        - label: "I read [SPEC.md](https://github.com/davccavalcante/noeticos/blob/main/SPEC.md), including the limits and non-goals in section 8."
+          required: true
+        - label: "I searched existing issues and PRs for duplicates and prior art."
+          required: true
+        - label: "I understand substantive features need maintainer discussion before a PR opens (per CONTRIBUTING section 4.3)."
+          required: true
